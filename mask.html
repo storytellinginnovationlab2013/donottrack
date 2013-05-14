@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>HTML5 Masking Demo</title>
+    <style>
+        .star-mask{
+            clip-path: url(#star);
+        }
+        .star-rotate-mask{
+            clip-path: url(#rotating-star);
+        }
+        .rotate-star-mask{
+            clip-path: url(#star);
+            animation-duration: 10s;
+            animation-name: rotate;
+        }
+        @keyframes rotate{
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <svg>
+        <defs>
+            <clipPath id="star">
+                <path d="M0,449h1235l-999,726 382-1175 382,1175z" transform="scale(0.5)"/>
+            </clipPath>
+            <clipPath id="rotating-star">
+                <path d="M0,449h1235l-999,726 382-1175 382,1175z" transform="scale(0.5)">
+                    <animateTransform attributeName="transform"
+                          type="rotate"
+                          from="0 617 587"
+                          to="360 617 587"
+                          dur="10s"
+                          repeatCount="indefinite"/>
+                </path>
+            </clipPath>
+        </defs>
+    </svg>
+    <video src="DNTfirstpass.webm" loop autoplay class="star-mask"></video>
+</body>
+</html>

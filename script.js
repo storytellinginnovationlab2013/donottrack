@@ -19,50 +19,60 @@ var requestAnimationFrame =
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame;
 
-function loadData(data){
+function nodeFromObj(key, data, depth){
+    var edgename, name;
+    var node = data[key];
+    if (!node){
+        if (nodemap[key]){
+            return nodemap[key];
+        }else{
+            node = {
+                name: key,
+                visitedCount: 0,
+                secureCount: 0,
+                cookieCount: 0
+            }
+        }
+    }
+    node.lastAccess = new Date(node.lastAccess);
+    node.firstAccess = new Date(node.firstAccess);
+    if (node.visitedCount && node.linkedTo === undefined && depth){
+        console.log('loading linked source %s', node.name);
+        getDataForDomain(node.name, depth-1);
+    }
+    (node.linkedFrom || []).forEach(function(name){
+        var source = nodeFromObj(name, data, depth);
+        edgename = name + '->' + node.name;
+        if (!edgemap[edgename]){
+            edge = {source: source, target: node, name: edgename};
+            edgemap[edgename] = edge;
+            edges.push(edge);
+        }
+    });
+    (node.linkedTo || []).forEach(function(name){
+        var target = nodeFromObj(name, data, depth);
+        edgename = node.name + '->' + name;
+        if (!edgemap[edgename]){
+            edge = {source: node, target: target, name: edgename};
+            edgemap[edgename] = edge;
+            edges.push(edge);
+        }
+    });
+    if (nodemap[key]){
+        merge(nodemap[key], data[key]);
+    }else{
+        nodemap[key] = data[key];
+        nodes.push(node);
+    }
+    return node;
+}
+
+function loadData(data, depth){
     console.log('data arriving');
-    nodemap = data;
     var node, edgename, edge;
     console.log('All data: %o', Object.keys(data));
     connections = Object.keys(data).map(function(key){
-        node = data[key];
-        node.lastAccess = new Date(node.lastAccess);
-        node.firstAccess = new Date(node.firstAccess);
-        node.linkedFrom.forEach(function(name){
-            var source = nodemap[name];
-            if (!source){
-                nodemap[name] = source = {
-                    name: name,
-                    notVisited: true,
-                    notSecure: true,
-                    cookie: true
-                };
-            }
-            edgename = name + '->' + node.name;
-            if (!edgemap[edgename]){
-                edge = {source: source, target: node, name: edgename};
-                edgemap[edgename] = edge;
-                edges.push(edge);
-            }
-        });
-        node.linkedTo.forEach(function(name){
-            var target = nodemap[name];
-            if (!target){
-                nodemap[name] = target = {
-                    name: name,
-                    notVisited: true,
-                    notSecure: true,
-                    cookie: true
-                };
-            }
-            edgename = node.name + '->' + name;
-            if (!edgemap[edgename]){
-                edge = {source: node, target: target, name: edgename};
-                edgemap[edgename] = edge;
-                edges.push(edge);
-            }
-        });
-        return nodes.push(node);
+        return nodeFromObj(key, data, depth || 0);
     });
     aggregate = {
         allnodes: nodes,
@@ -72,17 +82,59 @@ function loadData(data){
     };
     initGraph();
 }
-function getDataForDomain(domain){
+
+function merge(node1, node2){
+    node1.contentTypes = mergeArray(node1.contentTypes, node2.contentTypes);
+    node1.cookieCount = Math.max(node1.cookieCount, node2.cookieCount);
+    node1.firstAccess = Math.min(node1.firstAccess, node2.firstAccess);
+    node1.howMany = Math.max(node1.howMany, node2.howMany);
+    node1.linkedFrom = mergeArray(node1.linkedFrom, node2.linkedFrom);
+    node1.linkedTo = mergeArray(node1.linkedTo, node2.linkedTo);
+    node1.method = mergeArray(node1.method, node2.method);
+    node1.secureCount = Math.max(node1.secureCount, node2.secureCount);
+    node1.status = mergeArray(node1.status, node2.status);
+    node1.subdomain = mergeArray(node1.subdomain, node2.subdomain);
+    node1.visitedCount = Math.max(node1.visitedAccount, node2.visitedCount);
+}
+
+function mergeArray(arr1, arr2){
+    if (!arr1) return arr2;
+    if (!arr2) return arr1;
+    if (!arr1.length) return arr2;
+    if (!arr2.length) return arr1;
+    arr2.forEach(function(item){
+        if (arr1.indexOf(item) < 0){
+            arr1.push(item);
+        }
+    });
+    return arr1;
+}
+
+function getDataForDomain(domain, depth){
     // load data from public server
     // just getting default for now, see
     // https://github.com/mmmavis/temp-collusion-db-server
     // for more options
     vis = d3.select('.vizcanvas');
     var s = document.createElement('script');
-    s.src="http://collusiondb-development.herokuapp.com/getData?callback=loadData&aggregateData=true&dateSince=2013-04-03&name=" + domain;
+    s.src="http://collusiondb-development.herokuapp.com/getData?callback=loadData" + (depth || 0) + "&aggregateData=true&dateSince=2013-04-03&name=" + domain;
     document.body.appendChild(s);
 };
 
+// YES, THIS IS FUGLY
+// Trying to have shallow recursion for JSONP callbacks isn't pretty
+
+function loadData0(data){
+    loadData(data, 0);
+}
+
+function loadData1(data){
+    loadData(data, 1);
+}
+
+function loadData2(data){
+    loadData(data, 2);
+}
 
 // SET UP D3 HANDLERS
 
@@ -91,6 +143,7 @@ var _initialized = false;
 function initGraph(){
     if (_initialized) return;
     // Initialize D3 layout and bind data
+    console.log('initGraph with %s nodes and %s edges', aggregate.allnodes.length, aggregate.edges.length);
     force = d3.layout.force()
         .nodes(aggregate.allnodes)
         .links(aggregate.edges)
@@ -106,7 +159,11 @@ function initGraph(){
             .attr('y1', function(edge){ return edge.source.y - cy; })
             .attr('x2', function(edge){ return edge.target.x - cx; })
             .attr('y2', function(edge){ return edge.target.y - cy; });
-        vis.selectAll('.node').call(updateNodes);
+        vis.selectAll('.node')
+            .attr('transform', function(node){ return 'translate(' + (node.x - cx) + ',' + (node.y - cy) + ') scale(' + (1 + .03 * node.weight) + ')'; })
+            .classed('secureYes', function(node){ return node.secureCount === node.howMany; })
+            .classed('secureNo', function(node){ return node.secureCount !== node.howMany; })
+            .attr('data-timestamp', function(node){ return node.lastAccess.toISOString(); });
     });
     _initialized = true;
 }
@@ -169,21 +226,9 @@ function updateGraph(){
         .attr('data-name', function(node){ return node.name; })
         .classed('node', true);
 
-
-
     nodes.exit()
         .remove();
     requestAnimationFrame(updateGraph);
-}
-
-function updateNodes(thenodes){
-    thenodes
-    .attr('transform', function(node){ return 'translate(' + (node.x - cx) + ',' + (node.y - cy) + ') scale(' + (1 + .03 * node.weight) + ')'; })
-    .classed('secureYes', function(node){ return node.secureCount === node.howMany; })
-    .classed('secureNo', function(node){ return node.secureCount !== node.howMany; })
-    // .style('opacity', function(node){ return (node.cookieCount / node.howMany) + .5; })
-    .attr('data-timestamp', function(node){ return node.lastAccess.toISOString(); });
-    // change shape if needed
 }
 
 /* Handle form input */
@@ -201,10 +246,16 @@ function handleKeyPress(evt){
         document.getElementById('website').src = 'http://' + url;
         // load data for url
         // FIXME: Make sure we're only passing through the domain
-        getDataForDomain(url);
+        getDataForDomain(url, 1);
         // add class to body for animation
         document.body.classList.add('showgraph');
+        // after awhile, change the text and re-show the form
+
     }
 }
+
+document.addEventListener('unload', function(evt){
+    document.getElementById('website').src = 'about:blank';
+}, false);
 
 
