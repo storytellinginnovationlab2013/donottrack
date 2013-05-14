@@ -8,6 +8,12 @@ var edgemap = {};
 var edges = [];
 var aggregate;
 
+// Fit Text
+var lines = document.querySelectorAll('span');
+fitText(lines[0], .37);
+fitText(lines[1], .25);
+fitText(lines[2], .15);
+
 var requestAnimationFrame =
     window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
@@ -170,9 +176,6 @@ function updateGraph(){
     requestAnimationFrame(updateGraph);
 }
 
-
-
-
 function updateNodes(thenodes){
     thenodes
     .attr('transform', function(node){ return 'translate(' + (node.x - cx) + ',' + (node.y - cy) + ') scale(' + (1 + .03 * node.weight) + ')'; })
@@ -181,6 +184,27 @@ function updateNodes(thenodes){
     // .style('opacity', function(node){ return (node.cookieCount / node.howMany) + .5; })
     .attr('data-timestamp', function(node){ return node.lastAccess.toISOString(); });
     // change shape if needed
+}
+
+/* Handle form input */
+
+document.getElementById('targetUrl').addEventListener('keydown', handleKeyPress, false);
+
+function handleKeyPress(evt){
+    // if Enter key is pressed, then:
+    var key = evt.key || evt.keyCode;
+    if (key === 13){ // Return/Enter pressed
+        // get url
+        var url = document.getElementById('targetUrl').value;
+        document.getElementById('targetUrl').value = '';
+        // load iframe for url
+        document.getElementById('website').src = 'http://' + url;
+        // load data for url
+        // FIXME: Make sure we're only passing through the domain
+        getDataForDomain(url);
+        // add class to body for animation
+        document.body.classList.add('showgraph');
+    }
 }
 
 

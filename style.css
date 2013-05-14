@@ -1,6 +1,10 @@
 body, html{
     background-color: #000;
     height: 100%;
+    overflow-x: hidden;
+}
+body{
+  width: 100%;
 }
 
 svg{
@@ -50,12 +54,21 @@ svg{
   width: 30%;
   height: 100%;
   background-color: hsla(0, 0%, 0%, 0.4);
-  font-size: 3em;
+  font-family: amarelinhamedium, 'Helvetica Neue', sans-serif;
   color: #F0F4F9;
   -moz-transition:right 2s;
   -webkit-transition:right 2s;
   -o-transition:right 2s;
   transition:right 2s;
+}
+
+.allowinput span{
+  display: block;
+  font-size: 95px;
+}
+
+.biig{
+  font-family: amarelinha_boldbold, 'Helvetica Neue', sans-serif;
 }
 
 .showgraph .allowinput{
@@ -68,10 +81,17 @@ svg{
   margin-left: 10%
 }
 
+.allowinput input{
+  line-height: 36px;
+  font-size: 30px;
+  height: 40px;
+  width: 100%;
+}
+
 /* VIDEO */
 
 #video{
-  width: 70%;
+  width: 66%;
   height: 100%;
   -moz-transition:width 2s;
   -webkit-transition:width 2s;
@@ -80,5 +100,23 @@ svg{
 }
 
 .showgraph #video{
-  width: 50%;
+  width: 47%;
 }
+
+#website{
+  position: absolute;
+  width: 47%;
+  height: 100%;
+  top: 0;
+  right: -50%;
+  -moz-transition:right 2s;
+  -webkit-transition:right 2s;
+  -o-transition:right 2s;
+  transition:right 2s;
+}
+
+.showgraph #website{
+  right: 0;
+}
+
+

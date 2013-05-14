@@ -3,19 +3,24 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Don't Track Me - Tribeca/Mozilla Storytelling Innovation Lab</title>
-	<link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="webfontkit-20130514-115045/stylesheet.css" />
+	<link rel="stylesheet" href="style.css" />
 </head>
 
 <body id="home">
     <iframe id="video" seamless="seamless" src="http://girlwalkallday.com/watch-the-film"></iframe>
+    <iframe id="website" seamless="seamless" src=""></iframe>
     <svg class="vizcanvas" viewBox="-350 -250 500 500"></svg>
     <div class="allowinput">
         <div class="innerinput">
-            <p>Where do you want to be tracked today?</p>
+            <span>Where do you go</span>
+            <span>to get your</span>
+            <span class="big">news?</span>
             <input type="url" id="targetUrl" />
         </div>
     </div>
     <script src="d3.v2.js"></script>
+    <script src="fittext.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
