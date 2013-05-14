@@ -1,0 +1,84 @@
+body, html{
+    background-color: #000;
+    height: 100%;
+}
+
+svg{
+  position:absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+}
+
+.edge{
+    stroke: hsla(0,0%,100%,0.5);
+}
+
+.node{
+    stroke-width: 4;
+}
+
+.secureYes{
+    stroke: hsla(118,80%,41%,0.5);
+}
+
+.secureNo{
+    stroke: hsla(4,95%,41%,0.5);
+}
+
+.secureBoth{
+    stroke: hsla(21,84%,50%,0.5);
+}
+
+.node.site{
+    fill: hsla(224,86%,53%,0.5);
+}
+
+.node{
+    fill: hsla(21,84%,50%,0.5);
+}
+
+/* FORM */
+
+.allowinput{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 100%;
+  background-color: hsla(0, 0%, 0%, 0.4);
+  font-size: 3em;
+  color: #F0F4F9;
+  -moz-transition:right 2s;
+  -webkit-transition:right 2s;
+  -o-transition:right 2s;
+  transition:right 2s;
+}
+
+.showgraph .allowinput{
+  right: -30%;
+}
+
+.innerinput{
+  margin-top: 40%;
+  width: 80%;
+  margin-left: 10%
+}
+
+/* VIDEO */
+
+#video{
+  width: 70%;
+  height: 100%;
+  -moz-transition:width 2s;
+  -webkit-transition:width 2s;
+  -o-transition:width 2s;
+  transition:width 2s;
+}
+
+.showgraph #video{
+  width: 50%;
+}
