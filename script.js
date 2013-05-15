@@ -21,7 +21,9 @@ var requestAnimationFrame =
 
 function nodeFromObj(key, data, depth){
     var edgename, name;
-    var node = data[key];
+    var node = nodemap[key];
+    if (node && !node.faked) return node;
+    node = data[key];
     if (!node){
         if (nodemap[key]){
             return nodemap[key];
@@ -30,7 +32,8 @@ function nodeFromObj(key, data, depth){
                 name: key,
                 visitedCount: 0,
                 secureCount: 0,
-                cookieCount: 0
+                cookieCount: 0,
+                faked: true
             }
         }
     }
@@ -40,6 +43,16 @@ function nodeFromObj(key, data, depth){
         console.log('loading linked source %s', node.name);
         getDataForDomain(node.name, depth-1);
     }
+    if (nodemap[key]){
+        merge(nodemap[key], data[key]);
+    }else{
+        nodemap[key] = data[key];
+        nodes.push(node);
+    }
+    return node;
+}
+
+function updateConnections(node, data, depth){
     (node.linkedFrom || []).forEach(function(name){
         var source = nodeFromObj(name, data, depth);
         edgename = name + '->' + node.name;
@@ -58,13 +71,6 @@ function nodeFromObj(key, data, depth){
             edges.push(edge);
         }
     });
-    if (nodemap[key]){
-        merge(nodemap[key], data[key]);
-    }else{
-        nodemap[key] = data[key];
-        nodes.push(node);
-    }
-    return node;
 }
 
 function loadData(data, depth){
@@ -73,6 +79,9 @@ function loadData(data, depth){
     console.log('All data: %o', Object.keys(data));
     connections = Object.keys(data).map(function(key){
         return nodeFromObj(key, data, depth || 0);
+    });
+    connections.forEach(function(conn){
+        updateConnections(conn, data, depth);
     });
     aggregate = {
         allnodes: nodes,
@@ -84,6 +93,9 @@ function loadData(data, depth){
 }
 
 function merge(node1, node2){
+    if (node1.faked){
+        return node2;
+    }
     node1.contentTypes = mergeArray(node1.contentTypes, node2.contentTypes);
     node1.cookieCount = Math.max(node1.cookieCount, node2.cookieCount);
     node1.firstAccess = Math.min(node1.firstAccess, node2.firstAccess);
@@ -233,29 +245,110 @@ function updateGraph(){
 
 /* Handle form input */
 
-document.getElementById('targetUrl').addEventListener('keydown', handleKeyPress, false);
+var inputs = document.getElementsByClassName('targetUrl');
+for (var i = 0; i < inputs.length; i++){
+    inputs[i].addEventListener('keydown', handleKeyPress, false);
+}
 
 function handleKeyPress(evt){
     // if Enter key is pressed, then:
     var key = evt.key || evt.keyCode;
     if (key === 13){ // Return/Enter pressed
-        // get url
-        var url = document.getElementById('targetUrl').value;
-        document.getElementById('targetUrl').value = '';
-        // load iframe for url
-        document.getElementById('website').src = 'http://' + url;
-        // load data for url
-        // FIXME: Make sure we're only passing through the domain
-        getDataForDomain(url, 1);
-        // add class to body for animation
-        document.body.classList.add('showgraph');
-        // after awhile, change the text and re-show the form
-
+        state = 2;
+        applyState();
     }
 }
 
 document.addEventListener('unload', function(evt){
     document.getElementById('website').src = 'about:blank';
 }, false);
+
+document.getElementById('website').src = 'about:blank';
+
+var state = 0;
+var MAX_STATE = 7;
+var video = document.getElementById('video');
+
+
+
+function cycleState(evt){
+    var key = evt.key || evt.keyCode;
+    if (key === evt.DOM_VK_LEFT){
+        // reduce state
+        if (state < 1){
+            return false;
+        }
+        state -= 1;
+    }else if (key === evt.DOM_VK_RIGHT){
+        if (state >= MAX_STATE){
+            return false;
+        }
+        state += 1;
+    }else if (key === evt.DOM_VK_SPACE){
+        video.pause();
+        console.log('current time: %s', video.currentTime);
+        return false;
+    }else{
+        console.log('the current time is %s, the key pressed is %s, space key is %s',
+            video.currentTime,
+            key,
+            evt.DOM_VK_SPACE);
+        return false;
+    }
+    applyState();
+    evt.preventDefault();
+    return false;
+}
+
+function applyState(){
+    console.log('apply state %s', state);
+    switch(state){
+        case 0: // hide everything except video and start playing at 0
+            document.body.className = '';
+            video.currentTime = 0;
+            video.play();
+            break;
+        case 1: // stop playing video and show first input prompt
+                // fade to looping audio
+            video.pause();
+            document.body.className = 'showinput';
+            break;
+        case 2: // hide input prompt and load requested page and graph
+            // get url
+            var url = inputs[0].value;
+            if (!url.length){
+                url = 'boingboing.net';
+            }
+            inputs[0].value = '';
+            // load iframe for url
+            document.getElementById('website').src = 'http://' + url;
+            // load data for url
+            // FIXME: Make sure we're only passing through the domain
+            getDataForDomain(url, 0);
+            // add class to body for animation
+            document.body.className = 'showgraph';
+            // after awhile, change the text and re-show the form
+            break;
+        case 3: // fade out looping audio
+                // start video again
+            video.play();
+            break;
+        case 4: // pause video, show second input prompt
+                // fade to looping audio
+            video.pause();
+            document.body.className = 'showinput2';
+            break;
+        case 5: // hide input prompt and load requested page and graph
+            break;
+        case 6: // fade out looping audio
+                // finish playing movie
+            break;
+        case 7: // fade to looping audio
+                // Show call to install Collusion
+            break;
+    }
+}
+
+document.body.addEventListener('keydown', cycleState, false);
 
 

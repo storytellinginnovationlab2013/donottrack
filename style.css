@@ -48,13 +48,13 @@ svg{
 
 /* FORM */
 
-.allowinput{
+.allowinput, .allowinput2{
   position: absolute;
   top: 0;
-  right: 0;
+  right: -30%;
   width: 30%;
   height: 100%;
-  background-color: hsla(0, 0%, 0%, 0.4);
+  background-color: #000000;
   font-family: amarelinhamedium, 'Helvetica Neue', sans-serif;
   color: #F0F4F9;
   -moz-transition:right 2s;
@@ -63,18 +63,19 @@ svg{
   transition:right 2s;
 }
 
-.allowinput span{
+.allowinput2{
+  background-color: #42130c;
+}
+
+.allowinput span, .allowinput2 span{
   display: block;
   font-size: 95px;
 }
 
-.biig{
-  font-family: amarelinha_boldbold, 'Helvetica Neue', sans-serif;
+.showinput .allowinput, .showinput2 .allowinput2{
+  right: 0;
 }
 
-.showgraph .allowinput{
-  right: -30%;
-}
 
 .innerinput{
   margin-top: 40%;
@@ -82,7 +83,7 @@ svg{
   margin-left: 10%
 }
 
-.allowinput input{
+.allowinput input, .allowinput2 input{
   line-height: 36px;
   font-size: 30px;
   height: 40px;
@@ -92,16 +93,7 @@ svg{
 /* VIDEO */
 
 #video{
-  width: 66%;
-  height: 100%;
-  -moz-transition:width 2s;
-  -webkit-transition:width 2s;
-  -o-transition:width 2s;
-  transition:width 2s;
-}
-
-.showgraph #video{
-  width: 47%;
+  width: 100%;
 }
 
 #website{
