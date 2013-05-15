@@ -15,7 +15,7 @@ svg{
   height: 100%;
   border: 0;
   margin: 0;
-  pointer-events: visibleFill;
+  pointer-events: none;
 }
 
 .edge{
@@ -51,20 +51,24 @@ svg{
 .allowinput, .allowinput2{
   position: absolute;
   top: 0;
-  right: -30%;
   width: 30%;
   height: 100%;
-  background-color: #000000;
   font-family: amarelinhamedium, 'Helvetica Neue', sans-serif;
   color: #F0F4F9;
-  -moz-transition:right 2s;
-  -webkit-transition:right 2s;
-  -o-transition:right 2s;
-  transition:right 2s;
+  -moz-transition:right 2s, left 2s;
+  -webkit-transition:right 2s, left 2s;
+  -o-transition:right 2s, left 2s;
+  transition:right 2s, left 2s;
+}
+
+.allowinput{
+  background-color: #000000;
+  right: -30%;
 }
 
 .allowinput2{
   background-color: #42130c;
+  left: -30%;
 }
 
 .allowinput span, .allowinput2 span{
@@ -72,10 +76,13 @@ svg{
   font-size: 95px;
 }
 
-.showinput .allowinput, .showinput2 .allowinput2{
+.showinput .allowinput{
   right: 0;
 }
 
+.showinput2 .allowinput2{
+  left: 0;
+}
 
 .innerinput{
   margin-top: 40%;
@@ -96,20 +103,46 @@ svg{
   width: 100%;
 }
 
-#website{
+#website, #website2{
   position: absolute;
   width: 47%;
   height: 100%;
   top: 0;
+  -moz-transition:right 2s, left 2s;
+  -webkit-transition:right 2s, left 2s;
+  -o-transition:right 2s, left 2s;
+  transition:right 2s, left 2s;
+}
+
+#website{
   right: -50%;
-  -moz-transition:right 2s;
-  -webkit-transition:right 2s;
-  -o-transition:right 2s;
-  transition:right 2s;
+}
+
+#website2{
+  left: -50%;
 }
 
 .showgraph #website{
   right: 0;
 }
 
+.showgraph2 #website2{
+  left: 0;
+}
+
+/* Call to action page */
+
+.cta{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  opacity: 0;
+}
+
+.final .cta{
+  display: block;
+  opacity: 1.0;
+}
 

@@ -254,16 +254,23 @@ function handleKeyPress(evt){
     // if Enter key is pressed, then:
     var key = evt.key || evt.keyCode;
     if (key === 13){ // Return/Enter pressed
-        state = 2;
-        applyState();
+        if (state === 1){
+            state = 2;
+            applyState();
+        }else if(state === 4){
+            state = 5;
+            applyState();
+        }
     }
 }
 
 document.addEventListener('unload', function(evt){
     document.getElementById('website').src = 'about:blank';
+    document.getElementById('website2').src = 'about:blank';
 }, false);
 
 document.getElementById('website').src = 'about:blank';
+document.getElementById('website2').src = 'about:blank';
 
 var state = 0;
 var MAX_STATE = 7;
@@ -285,7 +292,8 @@ function cycleState(evt){
         }
         state += 1;
     }else if (key === evt.DOM_VK_SPACE){
-        video.pause();
+        evt.preventDefault();
+        video.paused ? video.play() : video.pause();
         console.log('current time: %s', video.currentTime);
         return false;
     }else{
@@ -300,8 +308,18 @@ function cycleState(evt){
     return false;
 }
 
+function timerState(evt){
+    if (video.currentTime > 29.5 && video.currentTime < 32){
+        state = 1;
+        applyState();
+    }else if (video.currentTime > 91.5 && video.currentTime < 95){
+        state = 4;
+        applyState();
+    }
+}
+
 function applyState(){
-    console.log('apply state %s', state);
+    // Simple linear state machine, but different triggers can progress state
     switch(state){
         case 0: // hide everything except video and start playing at 0
             document.body.className = '';
@@ -317,20 +335,21 @@ function applyState(){
             // get url
             var url = inputs[0].value;
             if (!url.length){
-                url = 'boingboing.net';
+                url = 'vancouversun.com';
             }
             inputs[0].value = '';
             // load iframe for url
             document.getElementById('website').src = 'http://' + url;
             // load data for url
             // FIXME: Make sure we're only passing through the domain
-            getDataForDomain(url, 0);
+            getDataForDomain(url, 1);
             // add class to body for animation
             document.body.className = 'showgraph';
             // after awhile, change the text and re-show the form
             break;
         case 3: // fade out looping audio
                 // start video again
+            video.currentTime = 32.0;
             video.play();
             break;
         case 4: // pause video, show second input prompt
@@ -339,16 +358,38 @@ function applyState(){
             document.body.className = 'showinput2';
             break;
         case 5: // hide input prompt and load requested page and graph
+            var url = inputs[1].value;
+            if (!url.length){
+                url = 'boingboing.net';
+            }
+            inputs[1].value = '';
+            // load iframe for url
+            document.getElementById('website2').src = 'http://' + url;
+            // load data for url
+            // FIXME: Make sure we're only passing through the domain
+            getDataForDomain(url, 0);
+            // add class to body for animation
+            document.body.className = 'showgraph2';
+            // after awhile, change the text and re-show the form
             break;
         case 6: // fade out looping audio
                 // finish playing movie
+                video.currentTime = 95;
+                video.play();
             break;
         case 7: // fade to looping audio
                 // Show call to install Collusion
+            document.body.className = 'final';
             break;
     }
 }
 
-document.body.addEventListener('keydown', cycleState, false);
+function finalState(){
+    state = 7;
+    applyState();
+}
 
+document.body.addEventListener('keydown', cycleState, false);
+video.addEventListener('timeupdate', timerState, false);
+video.addEventListener('ended', finalState, false);
 
