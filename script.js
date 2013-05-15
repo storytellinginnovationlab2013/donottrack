@@ -90,6 +90,7 @@ function loadData(data, depth){
         edgemap: edgemap
     };
     initGraph();
+    updateGraph();
 }
 
 function merge(node1, node2){
@@ -107,6 +108,7 @@ function merge(node1, node2){
     node1.status = mergeArray(node1.status, node2.status);
     node1.subdomain = mergeArray(node1.subdomain, node2.subdomain);
     node1.visitedCount = Math.max(node1.visitedAccount, node2.visitedCount);
+    console.log('x: %s, y: %s, px: %s, py: %s', node1.x, node1.y, node1.px, node1.py);
 }
 
 function mergeArray(arr1, arr2){
@@ -162,7 +164,6 @@ function initGraph(){
         .charge(-500)
         .size([width,height])
         .start();
-    updateGraph();
 
     // update method
     force.on('tick', function(){
@@ -181,7 +182,7 @@ function initGraph(){
 }
 
 function getRadiusAndAngle(idx){
-    var step = 20;
+    var step = 30;
     var radius,angle;
     if (idx < 1){
         angle = 0;
@@ -197,7 +198,7 @@ function getRadiusAndAngle(idx){
         radius = step * 3;
     }else{
         angle = (Math.PI / 10) * idx;
-        radius = step * 4;
+        radius = step * 6;
     }
     return {radius: radius, angle: angle};
 }
@@ -228,7 +229,8 @@ function updateGraph(){
 
     nodes.call(force.drag);
 
-    nodes.enter().append('circle')
+    nodes.enter().append('use')
+        .attr('xlink:href', function(node){ return node.visitedCount ? '#globe' : '#eyeball' })
         .classed('visitedYes', function(node){ return node.visitedCount; })
         .classed('site', function(node){ return node.visitedCount; })
         .classed('visitedNo', function(node){ return !node.visitedCount; })
@@ -240,7 +242,6 @@ function updateGraph(){
 
     nodes.exit()
         .remove();
-    requestAnimationFrame(updateGraph);
 }
 
 /* Handle form input */
@@ -276,8 +277,6 @@ var state = 0;
 var MAX_STATE = 7;
 var video = document.getElementById('video');
 
-
-
 function cycleState(evt){
     var key = evt.key || evt.keyCode;
     if (key === evt.DOM_VK_LEFT){
@@ -294,13 +293,6 @@ function cycleState(evt){
     }else if (key === evt.DOM_VK_SPACE){
         evt.preventDefault();
         video.paused ? video.play() : video.pause();
-        console.log('current time: %s', video.currentTime);
-        return false;
-    }else{
-        console.log('the current time is %s, the key pressed is %s, space key is %s',
-            video.currentTime,
-            key,
-            evt.DOM_VK_SPACE);
         return false;
     }
     applyState();
