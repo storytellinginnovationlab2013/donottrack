@@ -16,6 +16,15 @@ svg{
   border: 0;
   margin: 0;
   pointer-events: none;
+  opacity: 1.0;
+  -moz-transition: opacity 2s;
+  -webkit-transition: opacity 2s;
+  -o-transition: opacity 2s;
+  transition: opacity 2s;
+}
+
+.hidegraph svg{
+  opacity: 0;
 }
 
 .edge{
@@ -130,6 +139,26 @@ svg{
   left: 0;
 }
 
+/* landing page */
+
+.landing{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  opacity: 0;
+  -moz-transition: opacity 2s;
+  -webkit-transition: opacity 2s;
+  -o-transition: opacity 2s;
+  transition: opacity 2s;
+}
+
+.start .landing{
+  display: block;
+  opacity: 1.0;
+}
+
 /* Call to action page */
 
 .cta{
@@ -139,6 +168,10 @@ svg{
   left: 0;
   display: none;
   opacity: 0;
+  -moz-transition: opacity 2s;
+  -webkit-transition: opacity 2s;
+  -o-transition: opacity 2s;
+  transition: opacity 2s;
 }
 
 .final .cta{
