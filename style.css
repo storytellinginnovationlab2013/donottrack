@@ -55,6 +55,45 @@ svg{
     fill: hsla(21,84%,50%,0.5);
 }
 
+/* DIALOGUE */
+
+.dialogue{
+  position: absolute;
+  display: none;
+  opacity: 0;
+  top: 40%;
+  left: 35%;
+  width: 30%;
+  text-align: center;
+  font-family: amarelinhamedium, 'Helvetica Neue', sans-serif;
+  font-size: 36px;
+  color: #F0F4F9;
+  background-color: rgba(66, 19, 12, 0.6);
+  padding: 24px;
+  border-radius: 10px;
+  -moz-transition: opacity 2s;
+  -webkit-transition: opacity 2s;
+  -o-transition: opacity 2s;
+  transition: opacity 2s;
+}
+
+.dialogue.show{
+  display: block;
+  opacity: 1.0;
+}
+
+.delayed{
+  visibility: hidden;
+  -moz-transition: visibility 2s;
+  -webkit-transition: visibility 2s;
+  -o-transition: visibility 2s;
+  transition: visibility 2s;
+}
+
+.show .delayed{
+  visibility: visible;
+}
+
 /* FORM */
 
 .allowinput, .allowinput2{
@@ -114,7 +153,6 @@ svg{
 
 #website, #website2{
   position: absolute;
-  width: 47%;
   height: 100%;
   top: 0;
   -moz-transition:right 2s, left 2s;
@@ -124,11 +162,13 @@ svg{
 }
 
 #website{
+  width: 47%;
   right: -50%;
 }
 
 #website2{
-  left: -50%;
+  width: 100%;
+  left: -100%;
 }
 
 .showgraph #website{

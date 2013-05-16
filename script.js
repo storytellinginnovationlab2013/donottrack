@@ -338,6 +338,8 @@ function applyState(){
                 url = 'vancouversun.com';
             }
             inputs[0].value = '';
+            // Show dialogue
+            document.querySelector('.dialogue').classList.add('show');
             // load iframe for url
             var frame = document.getElementById('website');
             frame.src = 'about:blank';
@@ -350,6 +352,9 @@ function applyState(){
             // after awhile, change the text and re-show the form
             break;
         case 4: // fade out looping audio
+                // hide dialogue
+                // Hide dialogue
+            document.querySelector('.dialogue').classList.remove('show');
                 // start video again
             video.currentTime = 32.0;
             video.play();
@@ -375,6 +380,9 @@ function applyState(){
                 url = 'boingboing.net';
             }
             inputs[1].value = '';
+            // Show dialogue
+            document.querySelector('.dialogue').classList.add('show');
+
             // load iframe for url
             document.getElementById('website2').src = 'http://' + url;
             // load data for url
@@ -387,6 +395,8 @@ function applyState(){
             // after awhile, change the text and re-show the form
             break;
         case 10: // fade out looping audio
+                // Hide dialogue
+                document.querySelector('.dialogue').classList.remove('show');
                 // finish playing movie
                 video.currentTime = 95;
                 video.play();

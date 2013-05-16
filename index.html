@@ -5,11 +5,14 @@
 	<title>Don't Track Me - Tribeca/Mozilla Storytelling Innovation Lab</title>
     <link rel="stylesheet" href="webfontkit-20130514-115045/stylesheet.css" />
 	<link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="DNT-NYC_32x32.png" />
 </head>
 
 <body id="home" class="start">
-    <video id="video" src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/DNTversion3.webm"></video>
-    <audio id="audio" src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/loop.ogg"></audio>
+    <!-- <video id="video" src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/DNTversion3.webm"></video> -->
+    <!-- <audio id="audio" src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/loop.ogg"></audio> -->
+    <video id="video" src="DNTversion3.webm"></video>
+    <audio id="audio" src="loop.ogg"></audio>
     <iframe id="website" src="about:blank"></iframe>
     <div class="allowinput">
         <div class="innerinput">
@@ -28,6 +31,10 @@
             <span class="big">@work?</span>
             <input type="url" class="targetUrl" />
         </div>
+    </div>
+    <div class="dialogue">
+        <p>Loading your website…</p>
+        <p class="delayed">Analyzing who is tracking you…</p>
     </div>
     <svg class="vizcanvas" viewBox="0 0 500 500">
         <defs>
