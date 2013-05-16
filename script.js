@@ -444,7 +444,7 @@ function applyState(){
             break;
         case 14: // fade to looping audio
                 // Show call to install Collusion
-            location.replace('http://localhost/tribeca/#bottom');
+            location.replace('index.html#bottom');
             break;
     }
 }
