@@ -380,6 +380,7 @@ function applyState(){
             // load data for url
             // FIXME: Make sure we're only passing through the domain
             getDataForDomain(url, 0);
+            document.querySelector('.vizcanvas').setAttribute('viewBox', '0 0 1000 1000');
             // add class to body for animation
             document.body.className = 'showgraph2';
             force.start();
