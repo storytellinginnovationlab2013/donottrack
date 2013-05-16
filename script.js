@@ -1,5 +1,5 @@
 var width = 500, height = 500;
-var cx = 350, cy=250;
+var cx = 250, cy=250;
 var force, vizcanvas, vis;
 
 var nodemap = {};
@@ -380,7 +380,7 @@ function applyState(){
             // load data for url
             // FIXME: Make sure we're only passing through the domain
             getDataForDomain(url, 0);
-            document.querySelector('.vizcanvas').setAttribute('viewBox', '0 0 1000 1000');
+            document.querySelector('.vizcanvas').setAttribute('viewBox', '-250 -250 1000 1000');
             // add class to body for animation
             document.body.className = 'showgraph2';
             force.start();
