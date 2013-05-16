@@ -1,63 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<title>Don't Track Me - Tribeca/Mozilla Storytelling Innovation Lab</title>
-    <link rel="stylesheet" href="webfontkit-20130516-121145/stylesheet.css" />
-	<link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/png" href="DNT-NYC_32x32.png" />
-</head>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
 
-<body id="home" class="start">
-    <!-- <video id="video" src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/DNTversion3.webm"></video> -->
-    <!-- <audio id="audio" src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/loop.ogg"></audio> -->
-    <video id="video" src="DNTversion3.webm"></video>
-    <audio id="audio" src="loop.ogg"></audio>
-    <iframe id="website" src="about:blank"></iframe>
-    <div class="allowinput">
-        <div class="innerinput">
-            <span>Where do you go</span>
-            <span>to get your</span>
-            <span class="big">news?</span>
-            <input type="url" class="targetUrl" />
-        </div>
-    </div>
-    <!-- TODO: Make website2 take over full page -->
-    <iframe id="website2" src="about:blank"></iframe>
-    <div class="allowinput2">
-        <div class="innerinput">
-            <span>Where do you go</span>
-            <span>to waste time</span>
-            <span class="big">@work?</span>
-            <input type="url" class="targetUrl" />
-        </div>
-    </div>
-    <div class="dialogue">
-        <p>Loading your website…</p>
-        <p class="delayed">Analyzing who is tracking you…</p>
-    </div>
-    <svg class="vizcanvas" viewBox="0 0 500 500">
-        <defs>
-            <path id="globe" transform="scale(0.25) translate(-150,-150)" d="M169.178,150h-15.342c-11.506,0-19.178-5.753-19.178-13.424c0-5.328,4.263-9.589,9.59-9.589
-            c7.67,0,7.883,7.671,13.424,7.671c4.26,0,7.67-3.41,7.67-7.671c0-7.458-3.621-11.293-7.244-14.916
-            c2.131-4.049,7.031-14.703,7.244-30.045c0-1.917-1.277-3.622-3.195-3.835c-4.049-0.639-8.098-1.064-12.146-1.064
-            c-32.389,1.064-53.698,16.407-53.698,42.19c0,23.013,19.178,42.19,42.191,42.19h0.639c-0.427,1.918-0.639,3.836-0.639,5.754
-            c0,11.721,8.097,21.734,19.178,24.293v27.486c0,2.131,1.705,3.836,3.836,3.836c11.504,0,34.518-19.178,34.518-46.027
-            C196.025,161.934,184.094,150,169.178,150z M150.001,0C67.158,0,0,67.157,0,150c0,82.844,67.158,150,150.001,150
-            S300,232.844,300,150C300,67.157,232.844,0,150.001,0z M150.001,242.053c-50.928,0-92.053-41.125-92.053-92.053
-            c0-50.927,41.125-92.052,92.053-92.052c50.927,0,92.052,41.125,92.052,92.052C242.053,200.928,200.928,242.053,150.001,242.053z"
-            />
-            <path id="eyeball" transform="scale(0.125) translate(-150,-150)" d="M150.001,115.481c-19.178,0-34.521,15.554-34.521,34.519c0,19.178,15.343,34.521,34.521,34.521
-            c18.964,0,34.519-15.343,34.519-34.521C184.52,131.035,168.965,115.481,150.001,115.481z M150.001,0C67.158,0,0,67.157,0,150
-            s67.158,150,150.001,150S300,232.843,300,150S232.844,0,150.001,0z M241.413,152.131c0,0-39.633,59.238-91.412,59.238
-            s-91.414-59.238-91.414-59.238c-0.852-1.278-0.852-2.982,0-4.262c0,0,39.635-59.237,91.414-59.237s90.987,58.598,90.987,58.598
-            l0.425,0.639C242.267,149.148,242.267,150.853,241.413,152.131z"/>
-        </defs>
-    </svg>
-    <img class="landing" src="130515__DNT-NYC_12.png" />
-    <img class="cta" src="130514__DNT-NYC_13.png" />
-    <script src="d3.v2.js"></script>
-    <script src="fittext.js"></script>
-    <script src="script.js"></script>
-</body>
+        <link rel="stylesheet" href="../Tribeca/css/normalize.min.css">
+        <link rel="stylesheet" href="../Tribeca/css/main.css">
+        <link rel="icon" type="image/png" href="DNT-NYC_32x32.png" />
+        <script src="../Tribeca/js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <section id="launch-program">
+            <video width="100%" autoplay loop>
+              <source src="video/coffe_cycle_HD.mp4" type="video/mp4" />
+              <source src="video/coffe_cycle_HD.webm" type="video/webm" />
+              Ici l'alternative à la vidéo : un lien de téléchargement, un message, etc.
+            </video>
+
+            </video>
+            <div id="btn" onclick="location.replace('http://localhost/tribeca/demo.html')">
+                <img class="play" src="../Tribeca/img/launch.png"/>
+                <p>Launch</p>
+            </div>
+        </section>
+
+
+        <section id="panel">
+            <div id="border-black"></div>
+            <div id="top">
+                <ul id="list">
+                    <li><img src="../Tribeca/img/morning_cup.png" alt=""></li>
+                    <li class="border"><img src="../Tribeca/img/trait_vertical1.png" alt=""></li>
+                    <li><img src="../Tribeca/img/a_teaser.png" alt=""></li>
+                    <li class="border"><img src="../Tribeca/img/trait_vertical2.png" alt=""></li>
+                    <li><img src="../Tribeca/img/made_in.png" alt=""></li>
+                    <li class="border"><img src="../Tribeca/img/trait_vertical3.png" alt=""></li>
+                    <li><img src="../Tribeca/img/logos.png" alt=""></li>
+
+                </ul>
+
+                <a class="more" href="#">More about the project</a>
+            </div>
+
+            <div id="bottom">
+                <div id="content">
+                    <a class="back" href="#">back to Your morning coffee cup!</a>
+
+                    <h1>“Do Not Track”</h1>
+                    <h2>let’s track the trackers</h2>
+                    <p>is an interactive documentary in progress<br/>Directed by Brett Gaylor and produced by Arte & Upian.
+</p>
+
+                    <p>This demo created by Dethe Elza, Sébastien Brothier, Gregory Trowbridge and Brett Gaylor<br/>
+                    Animations by Joakim Sundal <br/>
+                      Follow our progress <span class='twitter'>@donottrack</span>
+                    </p>
+
+                    <p class="red1">Help us collect data about the trackers</p>
+                    <p class="red2">by downloading Collusion</p>
+                    <p class="red3">the experimental add-on for firefox.</p>
+
+                    <p class="no-margin">Collusion is an experimental add-on for Firefox and allows you to see all the third parties that are tracking your movements across the Web. It shows, in real time, how that data creates a spider-web of interaction between companies and other trackers.</p>
+
+                    <p class="end">
+                        <a class="end red" href="#">Learn more</a>
+                        <span class="end">—</span>
+                        <a href="#" class="end orange">Download</a>
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+      <!--   <section id="program">
+            <h1>LE PROGRAMME</h1>
+        </section> -->
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+
+        <script src="../Tribeca/js/plugins.js"></script>
+        <script src="../Tribeca/js/main.js"></script>
+
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
 </html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Don't Track Me - Tribeca/Mozilla Storytelling Innovation Lab</title>
+    <link rel="stylesheet" href="webfontkit-20130516-121145/stylesheet.css" />
+	<link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="DNT-NYC_32x32.png" />
+</head>
+
+<body>
+    <video id="video" autoplay src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/DNTversion4.webm"></video>
+    <!-- <audio id="audio" src="http://videos-origin.mozilla.org/serv/webmademovies/tribecahacks/loop.ogg"></audio> -->
+    <iframe id="website" src="about:blank"></iframe>
+    <div class="allowinput">
+        <div class="innerinput">
+            <span>Where do you go</span>
+            <span>to get your</span>
+            <span class="big">news?</span>
+            <input type="url" class="targetUrl" />
+        </div>
+    </div>
+    <!-- TODO: Make website2 take over full page -->
+    <iframe id="website2" src="about:blank"></iframe>
+    <div class="allowinput2">
+        <div class="innerinput">
+            <span>Where do you go</span>
+            <span>to waste time</span>
+            <span class="big">@work?</span>
+            <input type="url" class="targetUrl" />
+        </div>
+    </div>
+    <div class="dialogue">
+        <p>Loading your website…</p>
+        <p class="delayed">Analyzing who is tracking you…</p>
+    </div>
+    <svg class="vizcanvas" viewBox="0 0 500 500">
+        <defs>
+            <path id="eyeball" transform="scale(0.125) translate(-150,-150)" d="M150.001,115.481c-19.178,0-34.521,15.554-34.521,34.519c0,19.178,15.343,34.521,34.521,34.521
+            c18.964,0,34.519-15.343,34.519-34.521C184.52,131.035,168.965,115.481,150.001,115.481z M150.001,0C67.158,0,0,67.157,0,150
+            s67.158,150,150.001,150S300,232.843,300,150S232.844,0,150.001,0z M241.413,152.131c0,0-39.633,59.238-91.412,59.238
+            s-91.414-59.238-91.414-59.238c-0.852-1.278-0.852-2.982,0-4.262c0,0,39.635-59.237,91.414-59.237s90.987,58.598,90.987,58.598
+            l0.425,0.639C242.267,149.148,242.267,150.853,241.413,152.131z"/>
+        </defs>
+    </svg>
+    <script src="d3.v2.js"></script>
+    <script src="fittext.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

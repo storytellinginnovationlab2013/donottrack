@@ -7,6 +7,9 @@ var nodes = [];
 var edgemap = {};
 var edges = [];
 
+var SVG_NS = 'http://www.w3.org/2000/svg';
+var XLINK_NS = 'http://www.w3.org/1999/xlink';
+
 // Fit Text
 var lines = document.querySelectorAll('span');
 fitText(lines[0], .37);
@@ -221,8 +224,7 @@ function updateGraph(){
     var points = vis.selectAll('.node')
         .data(nodes, function(node){ return node.name; });
 
-    points.enter().append('use')
-        .attr('xlink:href', function(node){ return node.visitedCount ? '#globe' : '#eyeball' })
+    points.enter().append('g')
         .classed('visitedYes', function(node){ return node.visitedCount; })
         .classed('site', function(node){ return node.visitedCount; })
         .classed('visitedNo', function(node){ return !node.visitedCount; })
@@ -230,10 +232,40 @@ function updateGraph(){
         .attr('cy', function(node, idx){ node.y = node.py = y(idx); return 0; })
         .attr('r', function(node){ return 20; })
         .attr('data-name', function(node){ return node.name; })
-        .classed('node', true);
+        .classed('node', true)
+        .each(setText);
 
     points.exit()
         .remove();
+}
+
+function setText(node, idx){
+    if (node.visitedCount){
+        var circle = document.createElementNS(SVG_NS, 'circle');
+        circle.setAttribute('x', 0);
+        circle.setAttribute('y', 0);
+        circle.setAttribute('r', 35);
+        this.appendChild(circle);
+        var text = document.createElementNS(SVG_NS, 'text');
+        text.appendChild(document.createTextNode(node.name));
+        text.setAttribute('class', 'nodename');
+        this.appendChild(text);
+        var w = text.getComputedTextLength();
+        var h = 26;
+        var rect = document.createElementNS(SVG_NS, 'rect');
+        rect.setAttribute('x', -(w/2 + h/2));
+        rect.setAttribute('y', -20 /* lineheight / 2 */);
+        rect.setAttribute('width', w + h);
+        rect.setAttribute('height', h);
+        rect.setAttribute('rx', h/2);
+        rect.setAttribute('ry', h/2);
+        rect.setAttribute('class', 'nodenameback');
+        this.insertBefore(rect, text);
+    }else{
+        var use = document.createElementNS(SVG_NS, 'use');
+        use.setAttributeNS(XLINK_NS, 'href', '#eyeball');
+        this.appendChild(use);
+    }
 }
 
 /* Handle form input */
@@ -257,15 +289,8 @@ function handleKeyPress(evt){
     }
 }
 
-document.addEventListener('unload', function(evt){
-    document.getElementById('website').src = 'about:blank';
-    document.getElementById('website2').src = 'about:blank';
-}, false);
 
-document.getElementById('website').src = 'about:blank';
-document.getElementById('website2').src = 'about:blank';
-
-var state = 0;
+var state = 1;
 var MAX_STATE = 14;
 var video = document.getElementById('video');
 
@@ -273,7 +298,7 @@ function cycleState(evt){
     var key = evt.key || evt.keyCode;
     if (key === evt.DOM_VK_LEFT){
         // reduce state
-        if (state < 1){
+        if (state < 2){
             return false;
         }
         state -= 1;
@@ -319,8 +344,6 @@ function timerState(evt){
 function applyState(){
     // Simple linear state machine, but different triggers can progress state
     switch(state){
-        case 0: // landing page
-            break;
         case 1: // hide everything except video and start playing at 0
             document.body.className = '';
             video.currentTime = 0;
@@ -342,7 +365,6 @@ function applyState(){
             document.querySelector('.dialogue').classList.add('show');
             // load iframe for url
             var frame = document.getElementById('website');
-            frame.src = 'about:blank';
             frame.src = 'http://' + url;
             // load data for url
             // FIXME: Make sure we're only passing through the domain
@@ -353,7 +375,6 @@ function applyState(){
             break;
         case 4: // fade out looping audio
                 // hide dialogue
-                // Hide dialogue
             document.querySelector('.dialogue').classList.remove('show');
                 // start video again
             video.currentTime = 32.0;
@@ -361,10 +382,13 @@ function applyState(){
             break;
         case 5: // hide visualization / web view
             document.body.className = 'hidegraph';
+            force.stop();
             break;
         case 6: // show visualization
             document.body.className = '';
-            force.start(); // and kick it
+            force.resume(); // and kick it
+            // remove website
+            document.body.removeChild(document.getElementById('website'));
             break;
         case 7: // hide visualization
             document.body.className = 'hidegraph';
@@ -373,6 +397,8 @@ function applyState(){
                 // fade to looping audio
             video.pause();
             document.body.className = 'showinput2';
+            // make nodes in graph fully opaque
+            document.querySelector('svg').classList.add('followup');
             break;
         case 9: // hide input prompt and load requested page and graph
             var url = inputs[1].value;
@@ -391,7 +417,7 @@ function applyState(){
             document.querySelector('.vizcanvas').setAttribute('viewBox', '-250 -250 1000 1000');
             // add class to body for animation
             document.body.className = 'showgraph2';
-            force.start();
+            force.resume();
             // after awhile, change the text and re-show the form
             break;
         case 10: // fade out looping audio
@@ -403,17 +429,22 @@ function applyState(){
             break;
         case 11: // hide visualization / web2
             document.body.className = 'hidegraph';
+            force.stop();
             break;
-        case 12: // show visualization
+        case 12: // destroy visualization
+            document.body.removeChild(document.getElementById('website2'));
+            force.stop();
+            delete force;
+            var svg = document.querySelector('svg');
+            document.body.remove(svg);
             document.body.className = '';
-            force.start();
             break;
         case 13: // hide visualization
             document.body.className = 'hidegraph';
             break;
         case 14: // fade to looping audio
                 // Show call to install Collusion
-            document.body.className = 'final';
+            location.replace('http://localhost/tribeca/#bottom');
             break;
     }
 }
@@ -422,10 +453,6 @@ function finalState(){
     state = 14;
     applyState();
 }
-document.querySelector('.landing').addEventListener('click', function(){
-    state = 1;
-    applyState();
-}, false);
 document.body.addEventListener('keydown', cycleState, false);
 video.addEventListener('timeupdate', timerState, false);
 video.addEventListener('ended', finalState, false);

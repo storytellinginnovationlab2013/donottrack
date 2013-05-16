@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'DINOTCondensedBold';
+    src: url('dinot-condbold.eot');
+    src: url('dinot-condbold.eot') format('embedded-opentype'),
+         url('dinot-condbold.woff') format('woff'),
+         url('dinot-condbold.ttf') format('truetype'),
+         url('dinot-condbold.svg#DINOTCondensedBold') format('svg');
+}
