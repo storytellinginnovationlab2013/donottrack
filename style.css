@@ -1,3 +1,24 @@
+@font-face {
+    font-family: 'amarelinha';
+    src: url('css/fonts/amarelinha-webfont.eot');
+    src: url('css/fonts/amarelinha-webfont.eot?#iefix') format('embedded-opentype'),
+         url('css/fonts/amarelinha-webfont.woff') format('woff'),
+         url('css/fonts/amarelinha-webfont.ttf') format('truetype'),
+         url('css/fonts/amarelinha-webfont.svg#amarelinhamedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'dinot';
+    src: url('css/fonts/dinot-condbold.eot');
+    src: url('css/fonts/dinot-condbold.eot') format('embedded-opentype'),
+         url('css/fonts/dinot-condbold.woff') format('woff'),
+         url('css/fonts/dinot-condbold.ttf') format('truetype'),
+         url('css/fonts/dinot-condbold.svg#DINOTCondensedBold') format('svg');
+    font-weight: 600;
+}
+
 body, html{
     background-color: #000;
     height: 100%;
@@ -38,6 +59,8 @@ svg{
 }
 
 .nodename{
+  font-family: dinot;
+  font-weight: 600;
   text-anchor: middle;
   fill: #FFF;
 }
@@ -78,7 +101,7 @@ svg{
   height: 100%;
   text-align: center;
   vertical-align: center;
-  font-family: amarelinhamedium, 'Helvetica Neue', sans-serif;
+  font-family: amarelinha, 'Helvetica Neue', sans-serif;
   font-size: 72px;
   color: #F0F4F9;
   background-color: #000;
@@ -112,7 +135,7 @@ svg{
   top: 0;
   width: 30%;
   height: 100%;
-  font-family: amarelinhamedium, 'Helvetica Neue', sans-serif;
+  font-family: amarelinha, 'Helvetica Neue', sans-serif;
   color: #F0F4F9;
   -moz-transition:right 2s, left 2s;
   -webkit-transition:right 2s, left 2s;

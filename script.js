@@ -251,10 +251,10 @@ function setText(node, idx){
         text.setAttribute('class', 'nodename');
         this.appendChild(text);
         var w = text.getComputedTextLength();
-        var h = 26;
+        var h = 20;
         var rect = document.createElementNS(SVG_NS, 'rect');
         rect.setAttribute('x', -(w/2 + h/2));
-        rect.setAttribute('y', -20 /* lineheight / 2 */);
+        rect.setAttribute('y', -14);
         rect.setAttribute('width', w + h);
         rect.setAttribute('height', h);
         rect.setAttribute('rx', h/2);
