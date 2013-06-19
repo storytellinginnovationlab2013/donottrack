@@ -128,7 +128,9 @@ function getDataForDomain(domain, depth){
     // for more options
     vis = d3.select('.vizcanvas');
     var s = document.createElement('script');
-    s.src="http://collusiondb-development.herokuapp.com/getData?callback=loadData" + (depth || 0) + "&aggregateData=true&dateSince=2013-04-03&name=" + domain;
+    var oneWeek = 7 * 24 * 60 * 60 * 1000;
+    var since = new Date(Date.now() - oneWeek).toISOString().split('T')[0];
+    s.src="http://collusiondb-development.herokuapp.com/getData?callback=loadData" + (depth || 0) + "&aggregateData=true&dateSince=" + since + "&name=" + domain;
     document.body.appendChild(s);
 };
 
