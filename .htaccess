@@ -25,6 +25,3 @@
   RewriteRule ^(.*)$ https://donottrack-doc.com/ [R=301]
 </IfModule>
 
-
-  php_value session.cookie_httponly true
-</IfModule>
