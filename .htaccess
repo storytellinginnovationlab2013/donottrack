@@ -22,6 +22,6 @@
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^(.*)$ https://donottrack-doc.com/ [R=301]
+  RewriteRule .* https://donottrack-doc.com/ [R=301]
 </IfModule>
 
